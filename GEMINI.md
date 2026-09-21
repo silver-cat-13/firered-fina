@@ -1,36 +1,26 @@
 # Project: FireRed Fina Edition
 
 ## Objective
-ROM hack of Pokémon FireRed (v1.0 / USA / BPRE) creating a personalized gift for my brother featuring his Dalmatian dog, Finita, and her shadow-guardian evolution, Fina.
+A custom ROM hack of *Pokémon FireRed* (v1.0 / USA / `BPRE0.gba`) created as a personal gift for my brother, bringing his real Dalmatian dog, **Finita**, and her shadow-guardian evolution, **Fina**, into the game as his starting companion.
 
-## Target Pokémon Specifications
-- **Base Form:** Finita (The Spot Pup Pokémon)
-  - Type: Normal
-  - Abilities: Cute Charm
-  - Base Stat Total (BST): ~300
-  - Role: Early-game companion / starter replacement
-- **Evolved Form:** Fina (The Shadow Hound Pokémon)
-  - Type: Dark
-  - Abilities: Cute Charm
-  - Base Stat Total (BST): ~550
-  - Evolution Trigger: High Friendship (`Friendship >= 220`) + Level Up
-- **Detailed Design & Learnsets:** Refer to `docs/pokemon-fina.md`
+## Overview
+* **Finita (Base Form):** The Spot Pup Pokémon. A Normal-type early-game companion (BST ~300) replacing a starter slot in Pallet Town.
+* **Fina (Evolved Form):** The Shadow Hound Pokémon. A Dark-type guardian (BST ~550) that evolves when her friendship with her trainer reaches high levels (`Friendship >= 220`).
+* **Design & Learnset Details:** See [`docs/pokemon-fina.md`](file:///home/fernando/workspace/firered/firered-fina/docs/pokemon-fina.md).
+* **Sprite Specs & Catalog:** See [`docs/sprites.md`](file:///home/fernando/workspace/firered/firered-fina/docs/sprites.md).
 
-## Technical Constraints & Gen 3 Standards
-- **ROM Base:** Pokémon FireRed (USA, v1.0) / `BPRE0.gba`.
-- **Typing Engine:** Strict Generation 3 mechanics (17 original types only, no Fairy type).
-  - Dark-type attacks are Special.
-  - Normal-type attacks are Physical.
-- **Sprites:**
-  - Dimensions: Exactly 64x64 pixels for Front and Back battle sprites.
-  - Color Depth: Indexed 16 colors (4-bit depth).
-  - Palette Rule: Color index 0 is strictly transparent background. The remaining 15 colors are for body, shading, and accents.
-  - Party Icons: 32x32 pixels, 16-color indexed palette.
-- **Repository Safety:**
-  - NEVER commit or track `.gba` ROM files in Git.
-  - All public distributions must use delta patches (`.bps`).
+## Technical Guidelines
+* **ROM Base:** Pokémon FireRed (USA, v1.0) / `BPRE0.gba`.
+* **Gen 3 Mechanics:** Standard Generation 3 typing engine (17 original types). Dark attacks are Special; Normal attacks are Physical.
+* **Sprite Formatting:**
+  * Battle Sprites (Front & Back): 64x64 pixels, 16-color indexed palette.
+  * Transparency: Color index `0` is strictly transparent background.
+  * Party Icons: 32x32 pixels, 16-color indexed palette.
+* **Repository Safety:**
+  * Do not commit `.gba` ROM files or private reference photos in Git.
+  * Distribute builds using `.bps` delta patches.
 
-## Preferred Tools & Workflow
-- **Sprite Art:** Aseprite / GIMP (indexed color mode)
-- **ROM Editing:** Hex Maniac Advance (HMA)
-- **Patching & Testing:** Flips / Romhack.me (`.bps` format) + mGBA emulator
+## Workflow & Tools
+* **Sprite Editing:** Aseprite / GIMP / Python Pillow scripts.
+* **ROM Editing:** Hex Maniac Advance (HMA).
+* **Patching & Testing:** Flips (`.bps` format) and mGBA emulator.

@@ -1,0 +1,161 @@
+# ==============================================================================
+# Hex Maniac Advance (HMA) Patch Script: Finita & Fina (FireRed BPRE v1.0)
+# ==============================================================================
+# This script configures stats, typing, abilities, learnset, evolution, 
+# and Dex entries for Finita and Fina in Pokemon FireRed (USA v1.0).
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Base Stats Configuration
+# ------------------------------------------------------------------------------
+
+# --- FINITA (Starter Slot / Base Form) ---
+# Replace target species slot (e.g., pokémon.stats/data.pokemon.stats:SPECIES_FINITA)
+stats.finita:
+  hp: 55
+  attack: 60
+  defense: 45
+  speed: 55
+  spattack: 40
+  spdefense: 45
+  type1: Normal
+  type2: Normal
+  catchrate: 255
+  baseexp: 62
+  evyield: 1 Speed
+  gender: FemaleOnly # 100% Female (Fina/Finita)
+  growthrate: Medium Fast
+  eggGroup1: Field
+  eggGroup2: Field
+  ability1: CuteCharm
+  ability2: None
+
+# --- FINA (Evolved Shadow Guardian Form) ---
+stats.fina:
+  hp: 90
+  attack: 80
+  defense: 90
+  speed: 100
+  spattack: 110
+  spdefense: 80
+  type1: Dark
+  type2: Dark
+  catchrate: 45
+  baseexp: 210
+  evyield: 2 SpAttack
+  gender: FemaleOnly
+  growthrate: Medium Fast
+  eggGroup1: Field
+  eggGroup2: Field
+  ability1: CuteCharm
+  ability2: None
+
+# ------------------------------------------------------------------------------
+# 2. Evolution Trigger
+# ------------------------------------------------------------------------------
+# Finita -> Fina via High Friendship (Friendship >= 220) + Level Up
+evolutions.finita:
+  - method: HighFriendship
+    parameter: 0
+    target: FINA
+
+# ------------------------------------------------------------------------------
+# 3. Level-Up Learnset
+# ------------------------------------------------------------------------------
+moves.finita:
+  - level: 1   move: Tackle
+  - level: 1   move: TailWhip
+  - level: 5   move: Charm
+  - level: 9   move: QuickAttack
+  - level: 14  move: Bite
+  - level: 19  move: Roar
+  - level: 24  move: TakeDown
+  - level: 29  move: FaintAttack
+  - level: 35  move: Crunch
+  - level: 42  move: ConfuseRay
+  - level: 52  move: Moonlight
+
+moves.fina:
+  - level: 1   move: Tackle
+  - level: 1   move: TailWhip
+  - level: 5   move: Charm
+  - level: 9   move: QuickAttack
+  - level: 14  move: Bite
+  - level: 19  move: Roar
+  - level: 24  move: TakeDown
+  - level: 29  move: FaintAttack
+  - level: 35  move: Crunch
+  - level: 42  move: ConfuseRay
+  - level: 52  move: Moonlight
+
+# ------------------------------------------------------------------------------
+# 4. TM & HM Compatibility
+# ------------------------------------------------------------------------------
+tmhm.finita:
+  - TM04 Calm Mind
+  - TM06 Toxic
+  - TM10 Hidden Power
+  - TM12 Taunt
+  - TM15 Hyper Beam
+  - TM17 Protect
+  - TM21 Frustration
+  - TM23 Iron Tail
+  - TM27 Return
+  - TM29 Psychic
+  - TM30 Shadow Ball
+  - TM32 Double Team
+  - TM34 Shock Wave
+  - TM40 Aerial Ace
+  - TM41 Torment
+  - TM42 Facade
+  - TM43 Secret Power
+  - TM44 Rest
+  - TM45 Attract
+  - TM46 Thief
+  - TM49 Snatch
+  - HM01 Cut
+  - HM04 Strength
+  - HM05 Flash
+
+tmhm.fina:
+  - TM04 Calm Mind
+  - TM06 Toxic
+  - TM10 Hidden Power
+  - TM12 Taunt
+  - TM15 Hyper Beam
+  - TM17 Protect
+  - TM21 Frustration
+  - TM23 Iron Tail
+  - TM27 Return
+  - TM29 Psychic
+  - TM30 Shadow Ball
+  - TM32 Double Team
+  - TM34 Shock Wave
+  - TM40 Aerial Ace
+  - TM41 Torment
+  - TM42 Facade
+  - TM43 Secret Power
+  - TM44 Rest
+  - TM45 Attract
+  - TM46 Thief
+  - TM49 Snatch
+  - HM01 Cut
+  - HM04 Strength
+  - HM05 Flash
+
+# ------------------------------------------------------------------------------
+# 5. Pokedex Descriptions & Details
+# ------------------------------------------------------------------------------
+pokedex.finita:
+  name: "FINITA"
+  category: "Spot Pup"
+  height: 0.5 # ~1'08"
+  weight: 12.0 # ~26.4 lbs
+  description: "A spirited, loyal Dalmatian puppy. Highly affectionate and energetic, she follows her trainer everywhere with an innocent charm."
+
+pokedex.fina:
+  name: "FINA"
+  category: "Shadow Hound"
+  height: 1.2 # ~3'11"
+  weight: 32.0 # ~70.5 lbs
+  description: "Through a bond of friendship, she matures into a shadow guardian. Channels shadow energy through sleek midnight markings to protect her trainer."

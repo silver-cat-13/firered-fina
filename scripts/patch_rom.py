@@ -65,19 +65,19 @@ def patch_rom(input_rom, output_rom):
     if not os.path.exists(input_rom):
         print(f"Error: Base ROM not found at {input_rom}")
         return False
-        
+
     with open(input_rom, 'rb') as f:
         rom = bytearray(f.read())
-        
+
     print(f"Loaded ROM: {len(rom)} bytes")
-    
+
     finita_id = 1 # Bulbasaur slot
     fina_id = 2   # Ivysaur slot
-    
+
     # Write Pokemon Names
     rom[OFFSET_POKEMON_NAMES + finita_id * 11 : OFFSET_POKEMON_NAMES + (finita_id + 1) * 11] = encode_text("FINITA")
     rom[OFFSET_POKEMON_NAMES + fina_id * 11 : OFFSET_POKEMON_NAMES + (fina_id + 1) * 11] = encode_text("FINA")
-    
+
     # Write Base Stats: Finita (BST 300)
     finita_stats = bytearray([
         55, 60, 45, 55, 40, 45, # Base Stats
@@ -94,7 +94,7 @@ def patch_rom(input_rom, output_rom):
         0, 0, 0, 0             # Safari run rate, Color, Padding
     ])
     rom[OFFSET_BASE_STATS + finita_id * 28 : OFFSET_BASE_STATS + (finita_id + 1) * 28] = finita_stats
-    
+
     # Write Base Stats: Fina (BST 550)
     fina_stats = bytearray([
         90, 80, 90, 100, 110, 80, # Base Stats
@@ -111,30 +111,30 @@ def patch_rom(input_rom, output_rom):
         0, 0, 0, 0               # Padding
     ])
     rom[OFFSET_BASE_STATS + fina_id * 28 : OFFSET_BASE_STATS + (fina_id + 1) * 28] = fina_stats
-    
+
     # Write Evolution: Finita -> Fina via High Friendship (Method 1)
     evo_data = bytearray(40)
     evo_data[0:2] = (1).to_bytes(2, 'little')
     evo_data[2:4] = (0).to_bytes(2, 'little')
     evo_data[4:6] = (fina_id).to_bytes(2, 'little')
     rom[OFFSET_EVOLUTIONS + finita_id * 40 : OFFSET_EVOLUTIONS + (finita_id + 1) * 40] = evo_data
-    
+
     # Write Move Learnset to Free Space (0xE45000)
     free_space = 0xE45000
     learnset_data = create_learnset_bytes()
-    
+
     # Finita Learnset Pointer
     finita_learnset_addr = free_space
     rom[finita_learnset_addr : finita_learnset_addr + len(learnset_data)] = learnset_data
     free_space += len(learnset_data)
     while free_space % 4 != 0: free_space += 1
-    
+
     # Fina Learnset Pointer
     fina_learnset_addr = free_space
     rom[fina_learnset_addr : fina_learnset_addr + len(learnset_data)] = learnset_data
     free_space += len(learnset_data)
     while free_space % 4 != 0: free_space += 1
-    
+
     # Update Learnset Table Pointers
     rom[OFFSET_LEARNSETS + finita_id * 4 : OFFSET_LEARNSETS + (finita_id + 1) * 4] = (finita_learnset_addr + 0x08000000).to_bytes(4, 'little')
     rom[OFFSET_LEARNSETS + fina_id * 4 : OFFSET_LEARNSETS + (fina_id + 1) * 4] = (fina_learnset_addr + 0x08000000).to_bytes(4, 'little')
@@ -142,7 +142,7 @@ def patch_rom(input_rom, output_rom):
     # Write Output ROM
     with open(output_rom, 'wb') as f:
         f.write(rom)
-        
+
     print(f"Stats, learnsets & evolutions patched successfully. Now inserting sprites and party icons...")
     apply_sprites_to_rom(output_rom)
     return True

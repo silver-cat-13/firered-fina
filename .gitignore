@@ -4,3 +4,4 @@ roms
 __pycache__/
 *.pyc
 docs/current_state.md
+.venv/

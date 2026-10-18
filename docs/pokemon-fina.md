@@ -75,19 +75,45 @@ Finita evolves into Fina through **High Friendship (`Friendship >= 220`) upon le
 
 ## Level-Up Learnset
 
+### Finita (Base Form)
 | Level | Move | Type | Category (Gen 3) | Power | Acc | PP | Notes |
 | :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
 | **1** | Tackle | Normal | Physical | 35 | 95% | 35 | Starting move |
 | **1** | Tail Whip | Normal | Status | — | 100% | 30 | Lowers target Defense |
 | **5** | Charm | Normal | Status | — | 100% | 20 | Sharply lowers target Attack |
 | **9** | Quick Attack | Normal | Physical | 40 | 100% | 30 | Priority (+1) |
-| **14** | Bite | Dark | Special | 60 | 100% | 25 | STAB on Fina (30% flinch) |
-| **19** | Roar | Normal | Status | — | 100% | 20 | Battle reset / force switch |
-| **24** | Take Down | Normal | Physical | 90 | 85% | 20 | Powerful recoil attack |
+| **14** | Bite | Dark | Special | 60 | 100% | 25 | 30% flinch chance |
+| **19** | Blaze Kick | Fire | Special | 85 | 90% | 10 | High crit ratio, 10% burn |
+| **24** | Take Down | Normal | Physical | 90 | 85% | 20 | Heavy physical tackle |
+| **29** | Faint Attack | Dark | Special | 60 | — | 20 | Never misses |
+| **35** | Crunch | Dark | Special | 80 | 100% | 15 | Heavy attack (20% Sp. Def drop) |
+| **42** | Confuse Ray | Ghost | Status | — | 100% | 10 | 100% accurate confusion |
+| **52** | Moonlight | Normal | Status | — | — | 5 | Restores 50% max HP |
+
+### Fina (Adult Shadow Guardian)
+| Level | Move | Type | Category (Gen 3) | Power | Acc | PP | Notes |
+| :---: | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **1** | Tackle | Normal | Physical | 35 | 95% | 35 | Starting move |
+| **1** | Tail Whip | Normal | Status | — | 100% | 30 | Lowers target Defense |
+| **1 / 19** | Blaze Kick | Fire | Special | 85 | 90% | 10 | High crit ratio, 10% burn, leverages 110 SpA |
+| **1 / 24** | Hi Jump Kick | Fighting | Physical | 85 | 90% | 20 | Fighting coverage, leverages 80 Atk |
+| **5** | Charm | Normal | Status | — | 100% | 20 | Sharply lowers target Attack |
+| **9** | Quick Attack | Normal | Physical | 40 | 100% | 30 | Priority (+1) |
+| **14** | Bite | Dark | Special | 60 | 100% | 25 | STAB (30% flinch) |
 | **29** | Faint Attack | Dark | Special | 60 | — | 20 | STAB; never misses |
 | **35** | Crunch | Dark | Special | 80 | 100% | 15 | Heavy STAB (20% Sp. Def drop) |
 | **42** | Confuse Ray | Ghost | Status | — | 100% | 10 | 100% accurate confusion |
 | **52** | Moonlight | Normal | Status | — | — | 5 | Restores 50% max HP |
+
+*(Note: Roar has been permanently removed from both learnsets).*
+
+---
+
+### Fast Testing Mode (`--test`)
+Running `python3 scripts/patch_rom.py --test` builds the ROM with speedrun testing values:
+* **Instant Evolution:** Finita Base Friendship set to `220` (evolves into Fina immediately on Level 5 $\rightarrow$ Level 6).
+* **Speedrun Stats:** Finita BST `790` (120/160/100/150/160/100) and Fina BST `970` (150/200/120/180/200/120).
+* **Early Testing Attacks:** Blaze Kick and Hi Jump Kick are unlocked at Level 1 and Level 6 for rapid testing.
 
 ---
 

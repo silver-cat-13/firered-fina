@@ -32,41 +32,29 @@
 
 ---
 
-## 2. Priority Issues to Fix Next (For Tomorrow's Agent)
+## 2. Issues Addressed and Resolved
 
-### 🔴 Priority 1: Party Screen Menu Icon ("Pokemon Screen")
-* **Problem:** In the in-game Start $\rightarrow$ POKÉMON menu (Party screen), Finita's icon looks distorted, truncated, or misplaced (see [`pics/sprite-issue.png`](file:///home/fernando/workspace/firered/firered-fina/pics/sprite-issue.png) and [`pics/Screenshot from 2026-09-20 22-51-03.png`](file:///home/fernando/workspace/firered/firered-fina/pics/Screenshot%20from%202026-09-20%2022-51-03.png)).
-* **Root Causes to Address:**
-  1. [`assets/icons/finita_icon.png`](file:///home/fernando/workspace/firered/firered-fina/assets/icons/finita_icon.png) and [`assets/icons/fina_icon.png`](file:///home/fernando/workspace/firered/firered-fina/assets/icons/fina_icon.png) were downscaled from large images and are blurry, taking up only a tiny portion of the 32x32 canvas.
-  2. In [`scripts/patch_sprites.py`](file:///home/fernando/workspace/firered/firered-fina/scripts/patch_sprites.py), `build_icon_tiles()` blurs the PNG again with Lanczos and applies lossy RGB thresholding instead of using direct indexed palette indices.
-  3. FireRed Party Icon Palette 1 has specific indexed slots:
-     * Index `0`: Transparent background
-     * Index `1`: Medium gray outline (`#707070`)
-     * Index `2`: Light gray shading (`#B8B8B8`)
-     * Index `3`: White fur (`#F8F8F8`)
-     * Index `7`: Pink tongue/ears (`#E87098`)
-     * Index `14`: Dark gray (`#606058`)
-     * Index `15`: Black spots/eyes (`#404040`)
-* **Action Required:**
-  * Design clean, crisp 32x32 pixel-art icons for Finita and Fina centered properly on the canvas with appropriate headroom.
-  * Provide two animation frames (Frame 0 and Frame 1, 512 bytes each, 1024 bytes total uncompressed).
-  * Direct-index the pixel data into Palette 1 slots.
+### ✅ Priority 1: Party Screen Menu Icon ("Pokemon Screen") [RESOLVED]
+* **Resolution:**
+  * Redesigned clean, crisp 32x32 pixel-art icons for Finita (puppy) and Fina (adult hound).
+  * Direct-indexed all pixel data into FireRed Icon Palette 1 slots (`0`: transparent, `1`: outline, `2`: shading, `3`: white fur, `7`: pink tongue/ears, `14`: dark slate, `15`: black spots/eyes/socks).
+  * Implemented two full animation frames (Frame 0 alert pose and Frame 1 animated bob, 512 bytes each, 1024 bytes total uncompressed GBA tiles).
+  * Upgraded [`scripts/patch_sprites.py`](file:///home/fernando/workspace/firered/firered-fina/scripts/patch_sprites.py) to read indexed palettes directly without Lanczos blurring or color loss.
 
 ---
 
-### 🟡 Priority 2: Relative Sprite Scale Polish (Puppy vs Adult)
-* **Problem:** Both Finita (puppy) and Fina (adult) currently measure 58 pixels tall inside their 64x64 canvases. Finita's head and body feel almost the same size as adult Fina on screen.
-* **Action Required:**
-  * Scale Finita slightly down inside her 64x64 canvas (to approx. 44–46 pixels tall with 10–12 pixels headroom/padding).
-  * This creates an immediate visual contrast: Finita looks like an adorable, compact puppy, and Fina visibly looms larger upon evolution.
+### ✅ Priority 2: Relative Sprite Scale Polish (Puppy vs Adult) [RESOLVED]
+* **Resolution:**
+  * Rescaled Finita's battle sprites ([`assets/sprites/finita_front.png`](file:///home/fernando/workspace/firered/firered-fina/assets/sprites/finita_front.png), [`assets/sprites/finita_back.png`](file:///home/fernando/workspace/firered/firered-fina/assets/sprites/finita_back.png), and [`assets/sprites/finita_shiny.png`](file:///home/fernando/workspace/firered/firered-fina/assets/sprites/finita_shiny.png)) down from 58px tall to 45px tall (grounded at line 60 with 15px headroom).
+  * Preserved adult Fina at full 58px height, creating an immediate, adorable contrast where Finita looks like a compact puppy and Fina looms large upon evolution.
 
 ---
 
-### 🟢 Priority 3: Testing Configuration vs Final Release
-* **Testing Convenience:**
-  * In [`scripts/patch_rom.py`](file:///home/fernando/workspace/firered/firered-fina/scripts/patch_rom.py#L91), Finita's base friendship is currently `70` (standard starter friendship, evolving around Lv 16–20).
-  * For fast iteration testing, temporarily set line 91 to `215` so she evolves into Fina immediately on Level 5 $\rightarrow$ Level 6.
-  * For the final gift release, ensure base friendship is restored to `70` and canonical stats are preserved.
+### ✅ Priority 3: Testing Configuration vs Final Release [RESOLVED]
+* **Resolution:**
+  * Added `--test` (`-t`) command-line flag to [`scripts/patch_rom.py`](file:///home/fernando/workspace/firered/firered-fina/scripts/patch_rom.py).
+  * In test mode: Finita base friendship is set to `220` (instant Level 6 evolution), base stats are supercharged (BST 790/970), and early kicks are active.
+  * In default mode: Canonical stats (BST 300/550), friendship 70, and clean progressive learnset are fully preserved.
 
 ---
 

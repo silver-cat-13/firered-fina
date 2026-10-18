@@ -41,41 +41,59 @@ def png_to_gba_tiles(png_path, target_size=(64, 64)):
     return bytes(gba_tiles), bytes(gba_palette)
 
 def build_icon_tiles(png_path):
-    img = Image.open(png_path).convert('RGB').resize((32, 32), Image.Resampling.LANCZOS)
-    pixels = list(img.getdata())
+    img = Image.open(png_path)
+    w, h = img.size
     
-    # Map pixels to FireRed Icon Palette 1:
-    # 0 = transparent (Green key)
-    # 3 = white fur (248, 248, 248)
-    # 15 = dark spots / eyes (64, 64, 64)
-    # 1 = gray outline (112, 112, 112)
-    # 7 = pink tongue (232, 112, 152)
-    indices = []
-    for r, g, b in pixels:
-        if r < 50 and g > 200 and b < 50: # green background key
-            indices.append(0)
-        elif r > 200 and g < 150 and b < 180: # pink
-            indices.append(7)
-        elif r < 70 and g < 70 and b < 70: # dark spots / eyes
-            indices.append(15)
-        elif r < 160 and g < 160 and b < 160: # gray outlines / shading
-            indices.append(1)
-        else: # white body fur
-            indices.append(3)
-            
-    # GBA 4-bit tile ordering (4 tiles wide x 4 tiles high)
-    w, h = 32, 32
-    frame = bytearray()
-    for tile_y in range(0, h, 8):
-        for tile_x in range(0, w, 8):
-            for y in range(8):
-                for x in range(0, 8, 2):
-                    p1 = indices[(tile_y + y) * w + (tile_x + x)] & 0x0F
-                    p2 = indices[(tile_y + y) * w + (tile_x + x + 1)] & 0x0F
-                    frame.append(p1 | (p2 << 4))
+    # If 32x64, extract both Frame 0 (y=0..31) and Frame 1 (y=32..63)
+    # If 32x32, Frame 0 is img, and Frame 1 is procedurally generated with 1-pixel bob
+    frames = []
+    if h >= 64:
+        frames.append(img.crop((0, 0, 32, 32)))
+        frames.append(img.crop((0, 32, 32, 64)))
+    else:
+        f0 = img.crop((0, 0, 32, 32))
+        frames.append(f0)
+        f1 = Image.new(f0.mode, (32, 32), 0 if f0.mode == 'P' else (0, 255, 0))
+        if f0.mode == 'P':
+            f1.putpalette(f0.getpalette())
+        f1.paste(f0.crop((0, 0, 32, 31)), (0, 1))
+        frames.append(f1)
+        
+    tiles_total = bytearray()
+    for frame_img in frames:
+        if frame_img.mode == 'P':
+            pixels = list(frame_img.getdata())
+        else:
+            rgb_pixels = list(frame_img.convert('RGB').getdata())
+            pixels = []
+            for r, g, b in rgb_pixels:
+                if r < 50 and g > 200 and b < 50:
+                    pixels.append(0)
+                elif r > 200 and g < 150 and b < 180:
+                    pixels.append(7)
+                elif r < 70 and g < 70 and b < 70:
+                    pixels.append(15)
+                elif r < 120 and g < 120 and b < 120:
+                    pixels.append(14)
+                elif r < 160 and g < 160 and b < 160:
+                    pixels.append(1)
+                elif r < 210 and g < 210 and b < 210:
+                    pixels.append(2)
+                else:
+                    pixels.append(3)
                     
-    # Two 32x32 frames required for Gen 3 icons (1024 bytes total)
-    return bytes(frame + frame)
+        # GBA 4-bit tile ordering (4 tiles wide x 4 tiles high)
+        frame_bytes = bytearray()
+        for tile_y in range(0, 32, 8):
+            for tile_x in range(0, 32, 8):
+                for y in range(8):
+                    for x in range(0, 8, 2):
+                        p1 = pixels[(tile_y + y) * 32 + (tile_x + x)] & 0x0F
+                        p2 = pixels[(tile_y + y) * 32 + (tile_x + x + 1)] & 0x0F
+                        frame_bytes.append(p1 | (p2 << 4))
+        tiles_total.extend(frame_bytes)
+        
+    return bytes(tiles_total)
 
 def lz77_compress(data):
     uncompressed_len = len(data)

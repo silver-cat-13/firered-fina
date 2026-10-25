@@ -1,7 +1,9 @@
 *.gba
-pics
-roms
+pics/
+roms/
 __pycache__/
 *.pyc
+*.jpg
+*.jpeg
 docs/current_state.md
 .venv/
